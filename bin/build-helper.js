@@ -1,13 +1,20 @@
 #!/usr/bin/env node
 'use strict';
 var path = require('path');
+var fs = require('fs');
 var paramaters = [];
 var parameterVersion = false;
 var packageDefinitionPath = path.join(process.cwd(), 'package.json');
 var buildConfigPath = path.join(process.cwd(), 'build-helper-config.json');
 var userPackage = require(packageDefinitionPath);
-var config = require(buildConfigPath);
 var Helper = require('../lib');
+var config = {};
+try {
+    fs.accessSync(buildConfigPath, fs.F_OK);
+    config = require(buildConfigPath);
+} catch (e) {
+    // It isn't accessible
+}
 
 var options = {
   push: config.push || false,
