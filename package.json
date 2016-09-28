@@ -1,0 +1,29 @@
+{
+  "name": "build-helper",
+  "version": "0.0.1",
+  "description": "git and relase management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "build-helper": "./bin/build-helper.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lotterfriends/build-helper.git"
+  },
+  "author": "André Tarnowsky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lotterfriends/build-helper/issues"
+  },
+  "homepage": "https://github.com/lotterfriends/build-helper#readme",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "changelog42": "lotterfriends/changelog42",
+    "shelljs": "^0.7.4",
+    "when": "^3.7.7"
+  },
+  "buildTimestamp": 1475049952763
+}
