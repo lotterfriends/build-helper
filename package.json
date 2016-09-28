@@ -24,5 +24,6 @@
     "changelog42": "lotterfriends/changelog42",
     "shelljs": "^0.7.4",
     "when": "^3.7.7"
-  }
+  },
+  "buildTimestamp": 1475049952763
 }
