@@ -63,6 +63,7 @@ function showHelp() {
     console.log('create a new release, update the version and build number and do the git stuff');
     console.log('build-helper 0.0.5');
     console.log('build-helper major|minor|patch');
+    console.log('build-helper -p minor');
     console.log();
     console.log('Usage: build-helper');
     console.log();
@@ -70,7 +71,7 @@ function showHelp() {
     console.log('   -h/--help     show this help');
     console.log('   -p/--push     push new release to origin');
     console.log('   -k/--keep     keep branch after performing finish');
-    // console.log('   -u/--update   ');
+    console.log('   -u/--update   (BETA) experimental');
     console.log();
 }
 
