@@ -38,12 +38,13 @@ var options = {
   push: config.push || false,
   keep: config.keep || false,
   update: config.update || false,
+  debug: config.debug || false,
   createChangelog: config.createChangelog || true,
   changelogFolder: config.changelogFolder || './changelogs',
   commitURL: config.commitURL,
   userPackage: packageDefinitionPath,
   packageSpaces: config.packageSpaces || 2,
-  preConditionCommands: config.preConditionCommands || []
+  preConditionCommands: config.preConditionCommands || [],
 };
 
 function extend(target) {
@@ -84,6 +85,11 @@ if (process.argv.length > 2) {
       case '--help':
         showHelp();
         end = true;
+        break;
+      case '-d':
+      case '--debug':
+        debug = true;
+        paramaters.shift();
         break;
       case '-p':
       case '--push':
