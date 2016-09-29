@@ -13,10 +13,10 @@ var chalk = require('chalk');
 function isFileReadable(file, callback) {
     try {
         fs.accessSync(file, fs.F_OK);
-        callback(null);
+        return true;
     } catch(e) {
         if(!Object.getOwnPropertyNames(file).length) {
-            callback('file not found');
+            return false;
         }
     }
 }
