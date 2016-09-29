@@ -111,7 +111,7 @@ if (process.argv.length > 2) {
 
 if (options.update) {
   parameterVersion = currentPackage.version;
-  console.log('verison taken from package.json: ' + parameterVersion);
+  console.log('verison taken from package file' + parameterVersion);
 } else {
   parameterVersion = paramaters[0];
 }
