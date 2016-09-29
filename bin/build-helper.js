@@ -1,19 +1,37 @@
 #!/usr/bin/env node
-'use strict';
+
 var path = require('path');
 var fs = require('fs');
 var paramaters = [];
 var parameterVersion = false;
-var packageDefinitionPath = path.join(process.cwd(), 'package.json');
+var packageDefinitionPathNpm = path.join(process.cwd(), 'package.json');
+var packageDefinitionPathComposer = path.join(process.cwd(), 'composer.json');
 var buildConfigPath = path.join(process.cwd(), 'build-helper-config.json');
-var userPackage = require(packageDefinitionPath);
 var Helper = require('../lib');
-var config = {};
-try {
-    fs.accessSync(buildConfigPath, fs.F_OK);
-    config = require(buildConfigPath);
-} catch (e) {
-    // It isn't accessible
+var chalk = require('chalk');
+
+function isFileReadable(file, callback) {
+    try {
+        fs.accessSync(file, fs.F_OK);
+        callback(null);
+    } catch(e) {
+        if(!Object.getOwnPropertyNames(file).length) {
+            callback('file not found');
+        }
+    }
+}
+
+var config = isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
+var userPackage = isFileReadable(packageDefinitionPathNpm) ? require(packageDefinitionPathNpm) : {};
+var packageDefinitionPath = userPackage;
+if(!Object.getOwnPropertyNames(userPackage).length) {
+    userPackage = isFileReadable(packageDefinitionPathComposer) ? require(packageDefinitionPathComposer) : {};
+    var packageDefinitionPath = packageDefinitionPathComposer;
+}
+
+if(!Object.getOwnPropertyNames(userPackage).length) {
+    console.log(chalk.red('no project file (package.json, composer.json)'))
+    process.exit(1);
 }
 
 var options = {
