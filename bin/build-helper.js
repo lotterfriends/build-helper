@@ -1,31 +1,49 @@
 #!/usr/bin/env node
-'use strict';
+
 var path = require('path');
 var fs = require('fs');
 var paramaters = [];
 var parameterVersion = false;
-var packageDefinitionPath = path.join(process.cwd(), 'package.json');
+var packageDefinitionPathNpm = path.join(process.cwd(), 'package.json');
+var packageDefinitionPathComposer = path.join(process.cwd(), 'composer.json');
 var buildConfigPath = path.join(process.cwd(), 'build-helper-config.json');
-var userPackage = require(packageDefinitionPath);
 var Helper = require('../lib');
-var config = {};
-try {
-    fs.accessSync(buildConfigPath, fs.F_OK);
-    config = require(buildConfigPath);
-} catch (e) {
-    // It isn't accessible
+var chalk = require('chalk');
+var semver = require('semver')
+
+function isFileReadable(file) {
+  try {
+    fs.accessSync(file, fs.F_OK);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+var config = isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
+var userPackage = isFileReadable(packageDefinitionPathNpm) ? require(packageDefinitionPathNpm) : {};
+var packageDefinitionPath = packageDefinitionPathNpm;
+if(!Object.getOwnPropertyNames(userPackage).length) {
+  userPackage = isFileReadable(packageDefinitionPathComposer) ? require(packageDefinitionPathComposer) : {};
+  var packageDefinitionPath = packageDefinitionPathComposer;
+}
+
+if(!Object.getOwnPropertyNames(userPackage).length) {
+  console.log(chalk.red('no project file (package.json, composer.json)'))
+  process.exit(1);
 }
 
 var options = {
   push: config.push || false,
   keep: config.keep || false,
   update: config.update || false,
+  debug: config.debug || false,
   createChangelog: config.createChangelog || true,
   changelogFolder: config.changelogFolder || './changelogs',
   commitURL: config.commitURL,
   userPackage: packageDefinitionPath,
   packageSpaces: config.packageSpaces || 2,
-  preConditionCommands: config.preConditionCommands || []
+  preConditionCommands: config.preConditionCommands || [],
 };
 
 function extend(target) {
@@ -45,6 +63,7 @@ function showHelp() {
     console.log('create a new release, update the version and build number and do the git stuff');
     console.log('build-helper 0.0.5');
     console.log('build-helper major|minor|patch');
+    console.log('build-helper -p minor');
     console.log();
     console.log('Usage: build-helper');
     console.log();
@@ -52,7 +71,7 @@ function showHelp() {
     console.log('   -h/--help     show this help');
     console.log('   -p/--push     push new release to origin');
     console.log('   -k/--keep     keep branch after performing finish');
-    // console.log('   -u/--update   ');
+    console.log('   -u/--update   (BETA) experimental');
     console.log();
 }
 
@@ -66,20 +85,21 @@ if (process.argv.length > 2) {
         showHelp();
         end = true;
         break;
+      case '-d':
+      case '--debug':
+        options.debug = true;
+        break;
       case '-p':
       case '--push':
         options.push = true;
-        paramaters.shift();
         break;
       case '-k':
       case '--keep':
         options.keep = true;
-        paramaters.shift();
         break;
       case '-u':
       case '--update':
         options.update = true;
-        paramaters.shift();
         break;
     }
   });
@@ -90,19 +110,24 @@ if (process.argv.length > 2) {
   showHelp();
   process.exit(1);
 }
-
 if (options.update) {
   parameterVersion = currentPackage.version;
-  console.log('verison taken from package.json: ' + parameterVersion);
+  console.log('verison taken from package file' + parameterVersion);
 } else {
-  parameterVersion = paramaters[0];
+  parameterVersion = paramaters[paramaters.length-1];
+  if (parameterVersion.indexOf('.') > -1) {
+    parameterVersion = semver.clean(parameterVersion);
+  }
+  if (semver.valid(parameterVersion) === null && parameterVersion !== 'patch' && parameterVersion !== 'major' && parameterVersion !== 'minor') {
+    console.log(chalk.red('invalid version parameter'));
+    process.exit(1);
+  }
 }
 
 if (typeof parameterVersion === 'undefined') {
   showHelp();
   process.exit(1);
 }
-
 
 var helper = new Helper(extend({}, options, {
     currentVersion: userPackage.version,
