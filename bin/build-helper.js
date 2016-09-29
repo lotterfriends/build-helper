@@ -87,7 +87,7 @@ if (process.argv.length > 2) {
         break;
       case '-d':
       case '--debug':
-        debug = true;
+        options.debug = true;
         break;
       case '-p':
       case '--push':
