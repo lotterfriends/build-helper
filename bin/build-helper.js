@@ -24,13 +24,13 @@ var config = isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
 var userPackage = isFileReadable(packageDefinitionPathNpm) ? require(packageDefinitionPathNpm) : {};
 var packageDefinitionPath = userPackage;
 if(!Object.getOwnPropertyNames(userPackage).length) {
-    userPackage = isFileReadable(packageDefinitionPathComposer) ? require(packageDefinitionPathComposer) : {};
-    var packageDefinitionPath = packageDefinitionPathComposer;
+  userPackage = isFileReadable(packageDefinitionPathComposer) ? require(packageDefinitionPathComposer) : {};
+  var packageDefinitionPath = packageDefinitionPathComposer;
 }
 
 if(!Object.getOwnPropertyNames(userPackage).length) {
-    console.log(chalk.red('no project file (package.json, composer.json)'))
-    process.exit(1);
+  console.log(chalk.red('no project file (package.json, composer.json)'))
+  process.exit(1);
 }
 
 var options = {
