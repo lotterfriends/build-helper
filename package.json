@@ -1,6 +1,6 @@
 {
   "name": "build-helper",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "git and relase management",
   "main": "index.js",
   "scripts": {
@@ -25,5 +25,5 @@
     "shelljs": "^0.7.4",
     "when": "^3.7.7"
   },
-  "buildTimestamp": 1475052290779
+  "buildTimestamp": 1475142538712
 }
