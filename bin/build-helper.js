@@ -22,7 +22,7 @@ function isFileReadable(file) {
 
 var config = isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
 var userPackage = isFileReadable(packageDefinitionPathNpm) ? require(packageDefinitionPathNpm) : {};
-var packageDefinitionPath = userPackage;
+var packageDefinitionPath = packageDefinitionPathNpm;
 if(!Object.getOwnPropertyNames(userPackage).length) {
   userPackage = isFileReadable(packageDefinitionPathComposer) ? require(packageDefinitionPathComposer) : {};
   var packageDefinitionPath = packageDefinitionPathComposer;
