@@ -11,15 +11,13 @@ var Helper = require('../lib');
 var chalk = require('chalk');
 var semver = require('semver')
 
-function isFileReadable(file, callback) {
-    try {
-        fs.accessSync(file, fs.F_OK);
-        return true;
-    } catch(e) {
-        if(!Object.getOwnPropertyNames(file).length) {
-            return false;
-        }
-    }
+function isFileReadable(file) {
+  try {
+    fs.accessSync(file, fs.F_OK);
+    return true;
+  } catch(e) {
+    return false;
+  }
 }
 
 var config = isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
