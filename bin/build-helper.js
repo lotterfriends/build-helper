@@ -9,6 +9,7 @@ var packageDefinitionPathComposer = path.join(process.cwd(), 'composer.json');
 var buildConfigPath = path.join(process.cwd(), 'build-helper-config.json');
 var Helper = require('../lib');
 var chalk = require('chalk');
+var semver = require('semver')
 
 function isFileReadable(file, callback) {
     try {
@@ -89,22 +90,18 @@ if (process.argv.length > 2) {
       case '-d':
       case '--debug':
         debug = true;
-        paramaters.shift();
         break;
       case '-p':
       case '--push':
         options.push = true;
-        paramaters.shift();
         break;
       case '-k':
       case '--keep':
         options.keep = true;
-        paramaters.shift();
         break;
       case '-u':
       case '--update':
         options.update = true;
-        paramaters.shift();
         break;
     }
   });
@@ -115,12 +112,18 @@ if (process.argv.length > 2) {
   showHelp();
   process.exit(1);
 }
-
 if (options.update) {
   parameterVersion = currentPackage.version;
   console.log('verison taken from package file' + parameterVersion);
 } else {
-  parameterVersion = paramaters[0];
+  parameterVersion = paramaters[paramaters.length-1];
+  if (parameterVersion.indexOf('.') > -1) {
+    parameterVersion = semver.clean(parameterVersion);
+  }
+  if (semver.valid(parameterVersion) === null && parameterVersion !== 'patch' && parameterVersion !== 'major' && parameterVersion !== 'minor') {
+    console.log(chalk.red('invalid version parameter'));
+    process.exit(1);
+  }
 }
 
 if (typeof parameterVersion === 'undefined') {
@@ -128,6 +131,7 @@ if (typeof parameterVersion === 'undefined') {
   process.exit(1);
 }
 
+return;
 
 var helper = new Helper(extend({}, options, {
     currentVersion: userPackage.version,
