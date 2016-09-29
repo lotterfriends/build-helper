@@ -131,8 +131,6 @@ if (typeof parameterVersion === 'undefined') {
   process.exit(1);
 }
 
-return;
-
 var helper = new Helper(extend({}, options, {
     currentVersion: userPackage.version,
     parameterVersion: parameterVersion
