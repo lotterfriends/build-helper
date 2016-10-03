@@ -20,6 +20,10 @@ function isFileReadable(file) {
   }
 }
 
+function isDefined(value) {
+  return typeof value !== 'undefined';
+}
+
 var config = isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
 var userPackage = isFileReadable(packageDefinitionPathNpm) ? require(packageDefinitionPathNpm) : {};
 var packageDefinitionPath = packageDefinitionPathNpm;
@@ -34,18 +38,18 @@ if(!Object.getOwnPropertyNames(userPackage).length) {
 }
 
 var options = {
-  push: config.push || false,
-  keep: config.keep || false,
-  update: config.update || false,
-  debug: config.debug || false,
-  buildTimestampInName: config.buildTimestampInName || true,
-  createChangelog: config.createChangelog || true,
-  changelogFolder: config.changelogFolder || './changelogs',
-  commitURL: config.commitURL,
-  releaseURL: config.releaseURL || false,
+  push: isDefined(config.push) ? config.push : false,
+  keep: isDefined(config.keep) ? config.keep : false,
+  update: isDefined(config.update) ? config.update : false,
+  debug: isDefined(config.debug) ? config.debug : false,
+  buildTimestampInName: isDefined(config.buildTimestampInName) ? config.buildTimestampInName : true,
+  createChangelog: isDefined(config.createChangelog) ? config.createChangelog : true,
+  changelogFolder: isDefined(config.changelogFolder) ? config.changelogFolder : './changelogs',
+  commitURL: isDefined(config.commitURL) ? config.commitURL : false,
+  releaseURL: isDefined(config.releaseURL) ? config.releaseURL : false,
   userPackage: packageDefinitionPath,
-  packageSpaces: config.packageSpaces || 2,
-  preConditionCommands: config.preConditionCommands || [],
+  packageSpaces: isDefined(config.packageSpaces) ? config.packageSpaces : 2,
+  preConditionCommands: isDefined(config.preConditionCommands) ? config.preConditionCommands : [],
 };
 
 function extend(target) {
