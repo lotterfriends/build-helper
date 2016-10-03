@@ -38,6 +38,7 @@ var options = {
   keep: config.keep || false,
   update: config.update || false,
   debug: config.debug || false,
+  buildTimestampInName: config.buildTimestampInName || true,
   createChangelog: config.createChangelog || true,
   changelogFolder: config.changelogFolder || './changelogs',
   commitURL: config.commitURL,
