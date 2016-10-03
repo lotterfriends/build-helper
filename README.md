@@ -1,4 +1,5 @@
 # build-helper
+This tool helps building releases, works with composer and nodejs projects.
 
 ## Requiements
 git, git-flow, node, npm
