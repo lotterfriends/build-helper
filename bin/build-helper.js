@@ -42,6 +42,7 @@ var options = {
   createChangelog: config.createChangelog || true,
   changelogFolder: config.changelogFolder || './changelogs',
   commitURL: config.commitURL,
+  releaseURL: config.releaseURL || false,
   userPackage: packageDefinitionPath,
   packageSpaces: config.packageSpaces || 2,
   preConditionCommands: config.preConditionCommands || [],
