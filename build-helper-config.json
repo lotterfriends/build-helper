@@ -1,4 +1,5 @@
 {
   "commitURL": "https://github.com/lotterfriends/build-helper/commit",
-  "releaseURL": "https://github.com/lotterfriends/build-helper/releases/tag"
+  "releaseURL": "https://github.com/lotterfriends/build-helper/releases/tag",
+  "buildTimestampInName": false
 }
