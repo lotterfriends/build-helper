@@ -114,8 +114,8 @@ if (process.argv.length > 2) {
   process.exit(1);
 }
 if (options.update) {
-  parameterVersion = currentPackage.version;
-  console.log('verison taken from package file' + parameterVersion);
+  parameterVersion = userPackage.version;
+  console.log('verison taken from package file ' + parameterVersion);
 } else {
   parameterVersion = paramaters[paramaters.length-1];
   if (parameterVersion.indexOf('.') > -1) {
