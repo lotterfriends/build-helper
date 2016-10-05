@@ -41,6 +41,8 @@ var options = {
   userPackage: packageDefinitionPath,
   packageSpaces: isDefined(config.packageSpaces) ? config.packageSpaces : 2,
   preConditionCommands: isDefined(config.preConditionCommands) ? config.preConditionCommands : [],
+  neverendingChangelog: isDefined(config.releaseURL) ? config.releaseURL : false,
+  neverendingChangelogFilename: isDefined(config.changelogFolder) ? config.changelogFolder : 'CHANGELOG.md'
 };
 
 function showHelp() {
