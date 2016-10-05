@@ -35,14 +35,15 @@ With the `build-helper-config.json` config files you can configure your build an
 - `keep` - keep branch after performing finish (default: `false`).
 - `update` - update the last release (experimental) (default: `false`).
 - `debug` - print all called functions (default: `false`).
-- `debug` - print all called functions (default: `false`).
 - `buildTimestampInName` - include build Timestamp in release name  (default: `true`).
 - `createChangelog` - create a changelog  (default: `true`).
 - `changelogFolder` - folder where the changelog saved  (default: `./changelogs`).
-- `changelogFolder` - folder where the changelog saved  (default: `./changelogs`).
 - `commitURL` - repository commit url (default `false`) e.g. `"commitURL": "https://github.com/lotterfriends/build-helper/commit"`
 - `releaseURL` - repository commit url (default `false`) e.g. `"releaseURL": "https://github.com/lotterfriends/build-helper/releases/tag"`
-- `packageSpaces` - spaces in the package.json or composer.json file (default `2`),
+- `packageSpaces` - spaces in the package.json or composer.json file (default `2`),,
+- `preConditionCommands` - commands (as an array) that are executed before the release. If en error occure in one of these commands, the release doesn't start e.g. ``"preConditionCommands": ["grunt lintjs", "grunt lintcss"]`
+- `neverendingChangelog` - use just one changelog file and prepend the new releases (default: `false`).
+- `neverendingChangelogFilename` - the filename of the neverending changelog  (default: `CHANGELOG.md`).
 
 ## License
 
