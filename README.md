@@ -1,11 +1,11 @@
 # build-helper
-This tool helps building git releases with a changelog and (semver)[http://semver.org/] versioning, works with composer and nodejs projects.
+This tool helps building git releases with a changelog and [semver](http://semver.org/) versioning, works with composer and nodejs projects.
 
 ## Requiements
 git, git-flow, node, npm
 
 ## Install
-```
+```bash
 $ npm install --global lotterfriends/build-helper
 ```
 
@@ -19,7 +19,7 @@ $ npm install --global lotterfriends/build-helper
 * `-u/--update`: update the last release (experimental)
 
 ### Examples
-```
+```bash
 $ cd AwesomProject
 $ build-helper patch     # create a new (local) patch release - eg 0.0.4 -> 0.0.5
 $ build-helper -p minor  # create a new minor release and push the release branch and tag to the server - eg 0.2.4 -> 0.3.0
