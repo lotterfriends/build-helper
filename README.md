@@ -1,5 +1,5 @@
 # build-helper
-This tool helps building releases, works with composer and nodejs projects.
+This tool helps building git releases with a changelog and (semver)[http://semver.org/] versioning, works with composer and nodejs projects.
 
 ## Requiements
 git, git-flow, node, npm
@@ -27,7 +27,22 @@ $ build-helper --help    # show the help
 ```
 
 ## Usage `build-helper-config.json` config files
-~todo
+With the `build-helper-config.json` config files you can configure your build and set some properties to default.
+
+### Properties
+
+- `push` - push new release to origin (default: `false`).
+- `keep` - keep branch after performing finish (default: `false`).
+- `update` - update the last release (experimental) (default: `false`).
+- `debug` - print all called functions (default: `false`).
+- `debug` - print all called functions (default: `false`).
+- `buildTimestampInName` - include build Timestamp in release name  (default: `true`).
+- `createChangelog` - create a changelog  (default: `true`).
+- `changelogFolder` - folder where the changelog saved  (default: `./changelogs`).
+- `changelogFolder` - folder where the changelog saved  (default: `./changelogs`).
+- `commitURL` - repository commit url (default `false`) e.g. `"commitURL": "https://github.com/lotterfriends/build-helper/commit"`
+- `releaseURL` - repository commit url (default `false`) e.g. `"releaseURL": "https://github.com/lotterfriends/build-helper/releases/tag"`
+- `packageSpaces` - spaces in the package.json or composer.json file (default `2`),
 
 ## License
 
