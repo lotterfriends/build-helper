@@ -9,20 +9,11 @@ var packageDefinitionPathComposer = path.join(process.cwd(), 'composer.json');
 var buildConfigPath = path.join(process.cwd(), 'build-helper-config.json');
 var Helper = require('../lib');
 var chalk = require('chalk');
-var semver = require('semver')
-
-function isFileReadable(file) {
-  try {
-    fs.accessSync(file, fs.F_OK);
-    return true;
-  } catch(e) {
-    return false;
-  }
-}
-
-function isDefined(value) {
-  return typeof value !== 'undefined';
-}
+var semver = require('semver');
+var utils = require('./utils');
+var extend = utils.extend;
+var isFileReadable = utils.isFileReadable;
+var isDefined = utils.isDefined;
 
 var config = isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
 var userPackage = isFileReadable(packageDefinitionPathNpm) ? require(packageDefinitionPathNpm) : {};
@@ -33,7 +24,7 @@ if(!Object.getOwnPropertyNames(userPackage).length) {
 }
 
 if(!Object.getOwnPropertyNames(userPackage).length) {
-  console.log(chalk.red('no project file (package.json, composer.json)'))
+  console.log(chalk.red('no project file (package.json or composer.json)'))
   process.exit(1);
 }
 
@@ -51,16 +42,6 @@ var options = {
   packageSpaces: isDefined(config.packageSpaces) ? config.packageSpaces : 2,
   preConditionCommands: isDefined(config.preConditionCommands) ? config.preConditionCommands : [],
 };
-
-function extend(target) {
-    var sources = [].slice.call(arguments, 1);
-    sources.forEach(function (source) {
-        for (var prop in source) {
-            target[prop] = source[prop];
-        }
-    });
-    return target;
-}
 
 function showHelp() {
     console.log();
@@ -141,4 +122,7 @@ var helper = new Helper(extend({}, options, {
     currentVersion: userPackage.version,
     parameterVersion: parameterVersion
 }));
+helper.bump();
+helper.createBranchName();
+helper.release();
 
