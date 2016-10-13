@@ -21,6 +21,7 @@ $ npm install --global lotterfriends/build-helper
 ### Examples
 ```bash
 $ cd AwesomProject
+$ git flow init          # init git flow (if not yet done) 
 $ build-helper patch     # create a new (local) patch release - eg 0.0.4 -> 0.0.5
 $ build-helper -p minor  # create a new minor release and push the release branch and tag to the server - eg 0.2.4 -> 0.3.0
 $ build-helper --help    # show the help
