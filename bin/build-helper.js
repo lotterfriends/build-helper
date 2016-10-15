@@ -2,6 +2,7 @@
 
 var path = require('path');
 var fs = require('fs');
+var gitDescribeSync = require('git-describe').gitDescribeSync;
 var paramaters = [];
 var parameterVersion = false;
 var packageDefinitionPathNpm = path.join(process.cwd(), 'package.json');
@@ -20,12 +21,20 @@ var userPackage = isFileReadable(packageDefinitionPathNpm) ? require(packageDefi
 var packageDefinitionPath = packageDefinitionPathNpm;
 if(!Object.getOwnPropertyNames(userPackage).length) {
   userPackage = isFileReadable(packageDefinitionPathComposer) ? require(packageDefinitionPathComposer) : {};
-  var packageDefinitionPath = packageDefinitionPathComposer;
+  packageDefinitionPath = packageDefinitionPathComposer;
 }
-
 if(!Object.getOwnPropertyNames(userPackage).length) {
-  console.log(chalk.red('no project file (package.json or composer.json)'))
-  process.exit(1);
+  console.log(chalk.yellow('no project file (package.json or composer.json), testing for tags'))
+  var gitInfo = gitDescribeSync(process.cwd(), {
+    match: '[0-9]*.[0-9]*.[0-9]*'
+  });
+  if (typeof gitInfo.semver.version != 'undefined') {
+    userPackage.version = gitInfo.semver.version;
+    packageDefinitionPath = null;
+  } else {
+    console.log(chalk.red('no valid tags found'))
+    process.exit(1);
+  }
 }
 
 var options = {
@@ -103,7 +112,11 @@ if (process.argv.length > 2) {
 }
 if (options.update) {
   parameterVersion = userPackage.version;
-  console.log('verison taken from package file ' + parameterVersion);
+  if (packageDefinitionPath) {
+    console.log('version ' + parameterVersion + ' taken from package file ' + packageDefinitionPath);
+  } else {
+    console.log('version ' + parameterVersion + ' taken from tags');
+  }
 } else {
   parameterVersion = paramaters[paramaters.length-1];
   if (parameterVersion.indexOf('.') > -1) {
