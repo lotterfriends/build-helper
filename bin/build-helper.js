@@ -28,8 +28,10 @@ if(!Object.getOwnPropertyNames(userPackage).length) {
   var gitInfo = gitDescribeSync(process.cwd(), {
     match: '[0-9]*.[0-9]*.[0-9]*'
   });
-  if (typeof gitInfo.semver.version != 'undefined') {
+  if (gitInfo.semver && gitInfo.semver.version) {
     userPackage.version = gitInfo.semver.version;
+    userPackage.status = false;
+    userPackage.name = path.basename(process.cwd());
     packageDefinitionPath = null;
   } else {
     console.log(chalk.red('no valid tags found'))
@@ -135,7 +137,9 @@ if (typeof parameterVersion === 'undefined') {
 
 var helper = new Helper(extend({}, options, {
     currentVersion: userPackage.version,
-    parameterVersion: parameterVersion
+    parameterVersion: parameterVersion,
+    packageStatus: userPackage.status,
+    packageName: userPackage.name
 }));
 helper.bump();
 helper.createBranchName();
