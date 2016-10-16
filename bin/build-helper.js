@@ -12,32 +12,55 @@ var Helper = require('../lib');
 var chalk = require('chalk');
 var semver = require('semver');
 var utils = require('../lib/utils');
+var git = require('../lib/git');
 var extend = utils.extend;
 var isFileReadable = utils.isFileReadable;
 var isDefined = utils.isDefined;
 
 var config = isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
-var userPackage = isFileReadable(packageDefinitionPathNpm) ? require(packageDefinitionPathNpm) : {};
-var packageDefinitionPath = packageDefinitionPathNpm;
-if(!Object.getOwnPropertyNames(userPackage).length) {
-  userPackage = isFileReadable(packageDefinitionPathComposer) ? require(packageDefinitionPathComposer) : {};
-  packageDefinitionPath = packageDefinitionPathComposer;
-}
-if(!Object.getOwnPropertyNames(userPackage).length) {
+// var userPackage = isFileReadable(packageDefinitionPathNpm) ? require(packageDefinitionPathNpm) : {};
+// var packageDefinitionPath = packageDefinitionPathNpm;
+
+var packageDefinitionPath = utils.getPackage(process.cwd());
+var project = {};
+if (packageDefinitionPath) {
+  project = require(packageDefinitionPath);
+} else {
   console.log(chalk.yellow('no project file (package.json or composer.json), testing for tags'))
-  var gitInfo = gitDescribeSync(process.cwd(), {
-    match: '[0-9]*.[0-9]*.[0-9]*'
-  });
-  if (gitInfo.semver && gitInfo.semver.version) {
-    userPackage.version = gitInfo.semver.version;
-    userPackage.status = false;
-    userPackage.name = path.basename(process.cwd());
-    packageDefinitionPath = null;
+  var version = git.getLastTagSync();
+  if (semver.valid(version)) {
+    project.version = version;
+    project.status = false;
+    project.name = path.basename(process.cwd());
   } else {
-    console.log(chalk.red('no valid tags found'))
+    console.log(chalk.red('no valid tags found'));
     process.exit(1);
   }
 }
+
+// console.log(project);
+
+// return;
+
+// if (!Object.getOwnPropertyNames(userPackage).length) {
+//   userPackage = isFileReadable(packageDefinitionPathComposer) ? require(packageDefinitionPathComposer) : {};
+//   packageDefinitionPath = packageDefinitionPathComposer;
+// }
+// if(!Object.getOwnPropertyNames(userPackage).length) {
+//   console.log(chalk.yellow('no project file (package.json or composer.json), testing for tags'))
+//   var gitInfo = gitDescribeSync(process.cwd(), {
+//     match: '[0-9]*.[0-9]*.[0-9]*'
+//   });
+//   if (gitInfo.semver && gitInfo.semver.version) {
+//     userPackage.version = gitInfo.semver.version;
+//     userPackage.status = false;
+//     userPackage.name = path.basename(process.cwd());
+//     packageDefinitionPath = null;
+//   } else {
+//     console.log(chalk.red('no valid tags found'));
+//     process.exit(1);
+//   }
+// }
 
 var options = {
   push: isDefined(config.push) ? config.push : false,
@@ -49,7 +72,7 @@ var options = {
   changelogFolder: isDefined(config.changelogFolder) ? config.changelogFolder : './changelogs',
   commitURL: isDefined(config.commitURL) ? config.commitURL : false,
   releaseURL: isDefined(config.releaseURL) ? config.releaseURL : false,
-  userPackage: packageDefinitionPath,
+  packageDefinitionPath: packageDefinitionPath,
   packageSpaces: isDefined(config.packageSpaces) ? config.packageSpaces : 2,
   preConditionCommands: isDefined(config.preConditionCommands) ? config.preConditionCommands : [],
   neverendingChangelog: isDefined(config.neverendingChangelog) ? config.neverendingChangelog : false,
