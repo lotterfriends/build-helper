@@ -2,7 +2,7 @@
 
 // node
 var path = require('path');
-//lib
+// lib
 var chalk = require('chalk');
 var semver = require('semver');
 // dependencies
