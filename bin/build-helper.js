@@ -46,7 +46,6 @@ var initOptions = function() {
     preConditionCommands: _.resolveParam(config.preConditionCommands, []),
     neverendingChangelog: _.resolveParam(config.neverendingChangelog, false),
     neverendingChangelogFilename: _.resolveParam(config.neverendingChangelogFilename, 'CHANGELOG.md'),
-    packageDefinitionPath: packageDefinitionPath
   };
 };
 
