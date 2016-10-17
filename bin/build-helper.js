@@ -11,6 +11,7 @@ var _ = require('../lib/utils');
 var git = require('../lib/git');
 var project = {};
 var options = {};
+var cleanup = false;
 
 var getProject = function() {
   options.packageDefinitionPath = _.getPackage(process.cwd());
@@ -32,7 +33,7 @@ var getProject = function() {
 
 var initOptions = function() {
   var config = _.isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
-  options = {
+  _.extend(options, {
     push: _.resolveParam(config.push, false),
     keep: _.resolveParam(config.keep, false),
     update: _.resolveParam(config.update, false),
@@ -46,7 +47,7 @@ var initOptions = function() {
     preConditionCommands: _.resolveParam(config.preConditionCommands, []),
     neverendingChangelog: _.resolveParam(config.neverendingChangelog, false),
     neverendingChangelogFilename: _.resolveParam(config.neverendingChangelogFilename, 'CHANGELOG.md'),
-  };
+  });
 };
 
 var showHelp = function() {
@@ -67,6 +68,7 @@ var showHelp = function() {
   console.log('   -k/--keep     keep branch after performing finish');
   console.log('   -d/--debug    more output');
   console.log('   -u/--update   (BETA) experimental');
+  console.log('   --cleanup     reset repo')
   console.log();
 };
 
@@ -94,6 +96,10 @@ var handleParameters = function() {
           break;
         case '-u':
         case '--update':
+          options.update = true;
+          break;
+        case '--cleanup':
+          cleanup = true;
           options.update = true;
           break;
       }
@@ -129,17 +135,30 @@ var getVersion = function() {
   }
 };
 
+var doRelease = function() {
+  var helper = new Helper(_.extend({}, options, {
+    currentVersion: project.version,
+    packageStatus: project.status,
+    packageName: project.name
+  }));
+  helper.bump(parameterVersion);
+  helper.createBranchName();
+  helper.release();
+};
+
 getProject();
 initOptions();
 handleParameters();
 getVersion();
+if (cleanup) {
+  var helper = new Helper(_.extend({}, options, {
+    currentVersion: project.version,
+    packageStatus: project.status,
+    packageName: project.name
+   }));
+  helper.rollback();
+} else {
+  doRelease();
+}
 
-var helper = new Helper(_.extend({}, options, {
-  currentVersion: project.version,
-  packageStatus: project.status,
-  packageName: project.name
-}));
-helper.bump(parameterVersion);
-helper.createBranchName();
-helper.release();
 
