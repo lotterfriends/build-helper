@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 
+// node
 var path = require('path');
-var paramaters = [];
-var parameterVersion = false;
-var buildConfigPath = path.join(process.cwd(), 'build-helper-config.json');
-var Helper = require('../lib');
+//lib
 var chalk = require('chalk');
 var semver = require('semver');
-var _ = require('../lib/utils');
+// dependencies
+var Helper = require('../lib');
 var git = require('../lib/git');
+var _ = require('../lib/utils');
+// config
+var buildConfigPath = path.join(process.cwd(), 'build-helper-config.json');
+// vars
+var parameterVersion = false;
+var paramaters = [];
 var project = {};
 var options = {};
 var cleanup = false;
@@ -146,17 +151,21 @@ var doRelease = function() {
   helper.release();
 };
 
+var doCleanup = function() {
+  var helper = new Helper(_.extend({}, options, {
+    currentVersion: project.version,
+    packageStatus: project.status,
+    packageName: project.name
+  }));
+  helper.rollback();
+}
+
 getProject();
 initOptions();
 handleParameters();
 getVersion();
 if (cleanup) {
-  var helper = new Helper(_.extend({}, options, {
-    currentVersion: project.version,
-    packageStatus: project.status,
-    packageName: project.name
-   }));
-  helper.rollback();
+  doCleanup();
 } else {
   doRelease();
 }
