@@ -24,8 +24,7 @@
     "changelog42": "lotterfriends/changelog42",
     "semver": "^5.3.0",
     "shelljs": "^0.7.4",
-    "when": "^3.7.7",
-    "git-describe": "^3.0.2"
+    "when": "^3.7.7"
   },
   "buildTimestamp": 1476613917273
 }
