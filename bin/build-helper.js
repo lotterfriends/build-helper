@@ -9,7 +9,6 @@ var chalk = require('chalk');
 var semver = require('semver');
 var _ = require('../lib/utils');
 var git = require('../lib/git');
-var config = _.isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
 var project = {};
 var options = {};
 
@@ -32,6 +31,7 @@ var getProject = function() {
 };
 
 var initOptions = function() {
+  var config = _.isFileReadable(buildConfigPath) ? require(buildConfigPath) : {};
   options = {
     push: _.resolveParam(config.push, false),
     keep: _.resolveParam(config.keep, false),
