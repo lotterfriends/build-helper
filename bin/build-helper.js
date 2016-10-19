@@ -2,15 +2,19 @@
 
 // node
 var path = require('path');
+
 // lib
 var chalk = require('chalk');
 var semver = require('semver');
+
 // dependencies
 var Helper = require('../lib');
 var git = require('../lib/git');
 var _ = require('../lib/utils');
+
 // config
 var buildConfigPath = path.join(process.cwd(), 'build-helper-config.json');
+
 // vars
 var parameterVersion = false;
 var paramaters = [];
@@ -158,12 +162,13 @@ var doCleanup = function() {
     packageName: project.name
   }));
   helper.rollback();
-}
+};
 
 getProject();
 initOptions();
 handleParameters();
 getVersion();
+
 if (cleanup) {
   doCleanup();
 } else {
