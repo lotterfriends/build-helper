@@ -36,16 +36,16 @@ With the `build-helper-config.json` config files you can configure your build an
 - `keep` - keep branch after performing finish (default: `false`).
 - `update` - update the last release (experimental) (default: `false`).
 - `debug` - print all called functions (default: `false`).
-- `buildTimestampInName` - include build Timestamp in release name  (default: `true`).
+- `buildTimestampInName` - include build Timestamp in release name  (default: `false`).
 - `createChangelog` - create a changelog  (default: `true`).
 - `changelogFolder` - folder where the changelog saved  (default: `./changelogs`).
 - `commitURL` - repository commit url (default `false`) e.g. `"commitURL": "https://github.com/lotterfriends/build-helper/commit"`
 - `releaseURL` - repository commit url (default `false`) e.g. `"releaseURL": "https://github.com/lotterfriends/build-helper/releases/tag"`
 - `packageSpaces` - spaces in the package.json or composer.json file (default `2`),,
-- `preConditionCommands` - commands (as an array) that are executed before the release. If en error occure in one of these commands, the release doesn't start e.g. ``"preConditionCommands": ["grunt lintjs", "grunt lintcss"]`
+- `preConditionCommands` - commands (as an array) that are executed before the first release action. If en error occure in one of these commands, the release doesn't start e.g. ``"preConditionCommands": ["grunt lintjs", "grunt lintcss"]` (default: [])
 - `neverendingChangelog` - use just one changelog file and prepend the new releases (default: `false`).
 - `neverendingChangelogFilename` - the filename of the neverending changelog  (default: `CHANGELOG.md`).
-
+- `customReleaseCommands` - commands (as an array) that are executed after the branch creation and the update of ther version file (package.json, composer.json) and before the release branch commit, if you want to automatically update files or sth. with the commit, this is your place to be  (default: [])
 ## License
 
 ### The MIT License (MIT)
