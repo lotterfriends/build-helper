@@ -29,6 +29,8 @@ var getProject = function() {
   } else {
     console.log(chalk.yellow('no project file (package.json or composer.json), testing for tags'))
     var version = git.getLastTagSync();
+    var prefix = git.getVersionPrefixSync();
+    version = version.replace(prefix, '');
     if (semver.valid(version)) {
       project.version = version;
       project.status = false;
@@ -56,6 +58,7 @@ var initOptions = function() {
     preConditionCommands: _.resolveParam(config.preConditionCommands, []),
     neverendingChangelog: _.resolveParam(config.neverendingChangelog, false),
     neverendingChangelogFilename: _.resolveParam(config.neverendingChangelogFilename, 'CHANGELOG.md'),
+    customReleaseCommands: _.resolveParam(config.customReleaseCommands, []),
   });
 };
 
