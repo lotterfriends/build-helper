@@ -1,3 +1,6 @@
+# !!! DEPRECATED !!!
+I rename the project to [git-flow-buddy](https://github.com/lotterfriends/git-flow-buddy)
+
 # build-helper
 This tool helps building git releases with a changelog and [semver](http://semver.org/) versioning. The tool works with [composer](https://getcomposer.org/) and [node](https://www.npmjs.org) projects. The build-helper use `version` property in the `package.json` or `composer.json`. You can flag the release with a status e.g. `stable`, `unstable` or `beta` with a status field in the package file.
 
